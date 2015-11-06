@@ -195,8 +195,6 @@ class VTTable:
         print('Saving SQL dump '+filename)
         f=open(filename,'w')
         
-        f.write('SET SQL_SAFE_UPDATES=0;\n')
-        f.write('LOCK TABLES {0} WRITE;\n'.format(DecoId(tablename)))
         #f.write('DELETE FROM {0};\n'.format(DecoId(tablename)))
 
         
@@ -247,7 +245,6 @@ class VTTable:
             if linecount%10000==0: print("   "+str(linecount))
         if blockStarted:
             f.write(';\n')
-        f.write('UNLOCK TABLES;\n')
         f.close()
         print('Finished Saving SQL dump {0} ({1} rows)'.format(filename,linecount))
 
