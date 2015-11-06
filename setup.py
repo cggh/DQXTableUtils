@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='DQXTableUtils',
-    version='0.1.0',
+    version='0.1.1',
     packages=['DQXTableUtils'],
     description='Useful towel-related stuff.',
     install_requires=[
