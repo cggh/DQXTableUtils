@@ -190,7 +190,7 @@ class VTTable:
     def SaveSQLDump(self, filename, tablename):
         
         def DecoId(id):
-            return '`'+id+'`'
+            return '"'+id+'"'
         
         print('Saving SQL dump '+filename)
         f=open(filename,'w')
