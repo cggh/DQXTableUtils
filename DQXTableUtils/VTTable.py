@@ -1,3 +1,10 @@
+from __future__ import print_function
+from __future__ import division
+from __future__ import unicode_literals
+from builtins import str
+from builtins import range
+from builtins import object
+from past.utils import old_div
 import math
 import string
 
@@ -7,9 +14,9 @@ VERYSMALL= -1.0e199
 VERYLARGE= +1.0e199
 
 def PermutationIndices(data):
-    return sorted(range(len(data)), key = data.__getitem__)
+    return sorted(list(range(len(data))), key = data.__getitem__)
 
-class BasicStatAccum:
+class BasicStatAccum(object):
     def __init__(self):
         self.n = 0
         self.mean = 0
@@ -21,7 +28,7 @@ class BasicStatAccum:
         if (val!=None):
             self.n += 1
             delta = val - self.mean
-            self.mean += delta/self.n
+            self.mean += old_div(delta,self.n)
             self.M2 += delta*(val - self.mean)
             if (val<self.min): self.min=val
             if (val>self.max): self.max=val
@@ -31,9 +38,9 @@ class BasicStatAccum:
 
     def GetStandardDevation(self):
         if (self.n==0): return(0.0)
-        return(math.sqrt(self.M2/self.n))
+        return(math.sqrt(old_div(self.M2,self.n)))
 
-class VTColumn:
+class VTColumn(object):
     def __init__(self, iPar1, iPar2=None):#can be name, type; or another column
         if (iPar2!=None):
             iName=iPar1
@@ -68,7 +75,7 @@ class VTColumn:
         if Col1.Type!=Col2.Type: raise Exception('Inconsistent column types for {0}'.format(Col1.Name))
 
 #column types: 0=Value 1=Text
-class VTTable:
+class VTTable(object):
     
     def __init__(self):
         self.allColumnsText=False
@@ -218,18 +225,13 @@ class VTTable:
                     lineStr += 'NULL'
                 else:
                     if colIsString[colnr]:
-                        try:
-                            val=val.encode('ascii','ignore')
-                        except UnicodeDecodeError:
-                            print('Unable to encode '+val)
-                            val='*failed encoding*'
                         val=val.replace("\x92","'")
                         val=val.replace("\xC2","'")
                         val=val.replace("\x91","'")
                         #filter(lambda x: x in string.printable, val)
-                        val=val.replace("'","\\'") 
-                        val=val.replace('\r\n','\\n') 
-                        val=val.replace('\n\r','\\n') 
+                        val=val.replace("'","\\'")
+                        val=val.replace('\r\n','\\n')
+                        val=val.replace('\n\r','\\n')
                         lineStr += '\''
                         lineStr += val
                         if colIsString[colnr]: lineStr += '\''
@@ -313,7 +315,7 @@ class VTTable:
         print("   Max val= {0}".format(stats.max))
         
     def GetRowNrRange(self):
-        return range(0,self.GetRowCount())
+        return list(range(0,self.GetRowCount()))
         
     def GetRowCount(self):
         if len(self.Columns)==0: return(0);

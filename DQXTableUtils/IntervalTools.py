@@ -1,5 +1,10 @@
+from __future__ import division
+from __future__ import unicode_literals
 
-class IntervalOverlapFinder:
+from builtins import range
+from builtins import object
+from past.utils import old_div
+class IntervalOverlapFinder(object):
     def __init__(self):
         self.starts=[]
         self.ends=[]
@@ -36,7 +41,7 @@ class IntervalOverlapFinder:
             lastscaninterval=i2
         else:#do a binary search to find the rightmost interval that is not completely right of the test interval
             while i2>i1+1:
-                im=int((i1+i2)/2)
+                im=int(old_div((i1+i2),2))
                 if self.starts[im]<testend:
                     i1=im
                 else:
